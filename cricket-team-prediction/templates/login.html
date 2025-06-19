@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Predixi - Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <style>
+    :root {
+      --primary-color: #6c5ce7;
+      --secondary-color: #a29bfe;
+      --accent-color: #fd79a8;
+      --dark-color: #1a1a2e;
+      --light-color: #f5f6fa;
+    }
+
+    body {
+      background: linear-gradient(135deg, #16213E, #0F3460);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 400px;
+      border: none;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .login-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    .card-header {
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      text-align: center;
+      padding: 30px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-header h2 {
+      font-weight: 700;
+      margin: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-body {
+      padding: 30px;
+    }
+
+    .form-control {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      border-radius: 8px;
+      padding: 12px 15px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 0.25rem rgba(253, 121, 168, 0.25);
+      color: white;
+    }
+
+    .form-control::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .form-label {
+      color: white;
+      font-weight: 500;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .btn-login {
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      width: 100%;
+      margin-top: 10px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+    }
+
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+    }
+    /* Added styles for loading state */
+    .btn-login.loading {
+       opacity: 0.7;
+       cursor: not-allowed;
+    }
+    .btn-login .spinner {
+       width: 1rem;
+       height: 1rem;
+       border-width: .2em;
+       margin-left: 0.5rem;
+       display: inline-block; /* Keep it inline */
+       vertical-align: text-bottom; /* Align better with text */
+    }
+
+
+    .forgot-password {
+      color: var(--secondary-color);
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: block;
+      text-align: right;
+      margin-top: -15px;
+      margin-bottom: 20px;
+      transition: color 0.3s ease;
+    }
+
+    .forgot-password:hover {
+      color: var(--accent-color);
+    }
+
+    .register-link {
+      color: white;
+      text-align: center;
+      display: block;
+      margin-top: 20px;
+    }
+
+    .register-link a {
+      color: var(--accent-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .register-link a:hover {
+      color: var(--secondary-color);
+      text-decoration: underline;
+    }
+
+    .social-login {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    .social-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      transition: all 0.3s ease;
+      font-size: 18px;
+    }
+
+    .social-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .social-btn.facebook:hover { background: #3b5998; }
+    .social-btn.google:hover { background: #db4437; }
+    .social-btn.twitter:hover { background: #1da1f2; }
+    .social-btn.linkedin:hover { background: #0077b5; }
+
+    .password-toggle {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .password-toggle:hover { color: var(--accent-color); }
+
+    .password-container { position: relative; }
+
+    /* Error Message Styling */
+    #errorMessage {
+        color: var(--accent-color);
+        background-color: rgba(253, 121, 168, 0.1);
+        border: 1px solid rgba(253, 121, 168, 0.3);
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 15px;
+        text-align: center;
+        font-size: 0.9rem;
+        display: none; /* Hidden by default */
+    }
+  </style>
+</head>
+<body>
+  <div class="login-card animate_animated animate_fadeIn">
+    <div class="card-header">
+      <h2>Predixi</h2>
+    </div>
+    <div class="card-body">
+      <!-- Changed input type to 'email' for Firebase compatibility -->
+      <form id="loginForm">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" id="email" class="form-control" placeholder="Enter your email" required />
+        </div>
+        <div class="mb-3 password-container">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" id="password" class="form-control" placeholder="Enter your password" required />
+          <span class="password-toggle" id="togglePassword">
+            <i class="fas fa-eye"></i>
+          </span>
+        </div>
+        <a href="#" class="forgot-password">Forgot Password?</a> <!-- Needs separate implementation -->
+        <button type="submit" class="btn btn-login" id="loginButton">
+          <span class="button-text">LOGIN</span>
+          <span class="spinner-border spinner-border-sm spinner" role="status" aria-hidden="true" style="display: none;"></span>
+        </button>
+         <!-- Error Message Area -->
+         <div id="errorMessage"></div>
+      </form>
+
+      <div class="social-login">
+         <!-- Add event listeners and Firebase logic for these if needed -->
+        <button class="social-btn google"><i class="fab fa-google"></i></button>
+        <button class="social-btn facebook"><i class="fab fa-facebook-f"></i></button>
+        <button class="social-btn twitter"><i class="fab fa-twitter"></i></button>
+        <button class="social-btn linkedin"><i class="fab fa-linkedin-in"></i></button>
+      </div>
+
+      <div class="register-link">
+        Don't have an account? <a href="/register">Sign up</a> <!-- Ensure this page exists -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs - Use the latest v9 modular SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+  <script type="module">
+    // =========================================================================
+    // TODO: Replace with your actual Firebase project configuration
+    // =========================================================================
+    const firebaseConfig = {
+      apiKey: "AIzaSyBOhj8FYPcUKIZsFQDzvIeAUaNIOxP6hwE",
+      authDomain: "predixi-78708.firebaseapp.com",
+      projectId: "predixi-78708",
+      storageBucket: "predixi-78708.firebasestorage.app",
+      messagingSenderId: "436837749961",
+      appId: "1:436837749961:web:0df94a02dcb0579605a918",
+      measurementId: "G-44NG70SQGZ"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth(); // Get the Auth instance (compat version)
+
+    // List of admin emails (replace with your actual admin emails)
+    const ADMIN_EMAILS = [
+      "bsaimanikantabikkumalla@gmail.com",
+      "gopaladasmadhanmohan70998@gmail.com",
+      "samreenshaik627@gmail.com"
+      // Add more admin emails as needed
+    ];
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginForm = document.getElementById("loginForm");
+      const emailInput = document.getElementById("email"); // Changed ID
+      const passwordInput = document.getElementById("password");
+      const togglePassword = document.querySelector('#togglePassword');
+      const errorMessageDiv = document.getElementById('errorMessage');
+      const loginButton = document.getElementById('loginButton');
+      const buttonText = loginButton.querySelector('.button-text');
+      const buttonSpinner = loginButton.querySelector('.spinner');
+
+      // --- Helper Functions ---
+      function showLoading(isLoading) {
+          if (isLoading) {
+              loginButton.disabled = true;
+              loginButton.classList.add('loading');
+              buttonText.style.display = 'none'; // Hide text
+              buttonSpinner.style.display = 'inline-block'; // Show spinner
+          } else {
+              loginButton.disabled = false;
+              loginButton.classList.remove('loading');
+              buttonText.style.display = 'inline'; // Show text
+              buttonSpinner.style.display = 'none'; // Hide spinner
+          }
+      }
+
+      function showMessage(message, isError = true) {
+          errorMessageDiv.textContent = message;
+          errorMessageDiv.style.display = 'block';
+          errorMessageDiv.style.color = isError ? 'var(--accent-color)' : 'var(--secondary-color)';
+          errorMessageDiv.style.backgroundColor = isError ? 'rgba(253, 121, 168, 0.1)' : 'rgba(162, 155, 254, 0.1)';
+          errorMessageDiv.style.borderColor = isError ? 'rgba(253, 121, 168, 0.3)' : 'rgba(162, 155, 254, 0.3)';
+
+           // Optional: Shake animation for errors
+           if (isError) {
+               const card = document.querySelector('.login-card');
+               card.classList.remove('animate__shakeX');
+               void card.offsetWidth; // Trigger reflow
+               card.classList.add('animate__shakeX');
+           }
+      }
+
+      function hideMessage() {
+          errorMessageDiv.style.display = 'none';
+          errorMessageDiv.textContent = '';
+      }
+
+      // Check if user is admin
+      function isAdmin(email) {
+        return ADMIN_EMAILS.includes(email.toLowerCase());
+      }
+
+      // --- Event Listeners ---
+
+      // Password toggle functionality
+      togglePassword.addEventListener('click', function() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+      });
+
+      // Form submission with Firebase Auth
+      loginForm.addEventListener("submit", function(e) {
+        e.preventDefault(); // Prevent default form submission
+        hideMessage(); // Clear previous errors
+        showLoading(true); // Show loading indicator
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+
+        // Basic client-side validation (Firebase handles more specific errors)
+        if (!email || !password) {
+          showMessage("Please fill in both email and password.");
+          showLoading(false);
+          return;
+        }
+
+        // --- Firebase Sign In ---
+        auth.signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            // Signed in successfully
+            const user = userCredential.user;
+            console.log("User signed in:", user.uid);
+            
+            // Check if user is admin
+            if (isAdmin(user.email)) {
+              // Redirect admin to the prediction page
+              window.location.href = "/predict"; // You can change this URL as needed
+            } else {
+              // Redirect regular users to the main page
+              window.location.href = "/"; // Redirects to your site's root
+            }
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("Login Error:", errorCode, errorMessage);
+
+            // Provide user-friendly error messages
+            let displayMessage = "Login failed. Please check your credentials."; // Default
+            if (errorCode === 'auth/user-not-found') {
+                displayMessage = "No account found with this email.";
+            } else if (errorCode === 'auth/wrong-password') {
+                displayMessage = "Incorrect password. Please try again.";
+            } else if (errorCode === 'auth/invalid-email') {
+                displayMessage = "Please enter a valid email address.";
+            } // Add more specific error codes as needed
+
+            showMessage(displayMessage);
+          })
+          .finally(() => {
+             showLoading(false); // Hide loading indicator regardless of success/failure
+          });
+      }); // End form submit listener
+
+      // TODO: Add event listeners for social login buttons if implementing them
+      // Example for Google:
+      // document.querySelector('.social-btn.google').addEventListener('click', () => {
+      //   const provider = new firebase.auth.GoogleAuthProvider();
+      //   auth.signInWithPopup(provider)
+      //     .then(result => { window.location.href = "/"; })
+      //     .catch(error => { showMessage("Google Sign-in failed: " + error.message); });
+      // });
+
+    }); // End DOMContentLoaded listener
+  </script>
+</body>
+</html>

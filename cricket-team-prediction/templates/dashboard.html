@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PrediXI - Dashboard</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --primary-dark: #2563eb;
+      --secondary: #a855f7;
+      --dark: #1f2937;
+      --light: #f3f4f6;
+      --gray: #6b7280;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--light);
+      color: var(--dark);
+      min-height: 100vh;
+    }
+
+    /* Navbar Styling */
+    .navbar {
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 0.75rem 1rem;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-brand i {
+      margin-right: 0.5rem;
+      color: var(--primary);
+    }
+
+    .nav-link {
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 0.25rem;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .navbar-toggler {
+      border: none;
+    }
+
+    /* Header Banner */
+    .header {
+      background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.95));
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      padding: 2rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNwYXR0ZXJuKSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIvPjwvc3ZnPg==');
+      z-index: 0;
+    }
+
+    .logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-name {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .brand-name:hover {
+      transform: scale(1.05);
+    }
+
+    .tagline {
+      color: var(--gray);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Dashboard Main */
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 3rem auto;
+      padding: 2rem;
+      background: #fff;
+      border-radius: 0.75rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .dashboard-container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .dashboard-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+    }
+
+    .dashboard-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      color: var(--dark);
+      position: relative;
+    }
+
+    .dashboard-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      border-radius: 3px;
+    }
+
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .dashboard-btn {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+      min-width: 200px;
+      justify-content: center;
+      border: none;
+    }
+
+    .dashboard-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+      color: white;
+    }
+
+    .dashboard-btn i {
+      font-size: 1.2rem;
+    }
+
+    /* Stats Cards */
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+      border-left: 4px solid var(--primary);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-title {
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    /* Match Cards */
+    .match-card {
+      transition: all 0.3s ease;
+      border: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+
+    .match-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .match-card .card-img-top {
+      height: 180px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .match-card:hover .card-img-top {
+      transform: scale(1.05);
+    }
+
+    .match-card .card-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .match-card .badge {
+      font-size: 0.8rem;
+      padding: 0.4rem 0.75rem;
+    }
+
+    .match-card .btn {
+      font-size: 0.8rem;
+      padding: 0.4rem 0.75rem;
+    }
+
+    /* Leaderboard Table */
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 1.5rem;
+      background: white;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .leaderboard-table th {
+      background-color: var(--primary);
+      color: white;
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .leaderboard-table td {
+      padding: 1rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .leaderboard-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .leaderboard-table tr:hover {
+      background-color: rgba(59, 130, 246, 0.05);
+    }
+
+    .rank-cell {
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .user-cell {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      background-color: var(--light);
+    }
+
+    .points-cell {
+      font-weight: 700;
+      color: var(--success);
+    }
+
+    /* Section Styling */
+    .section {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--dark);
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      border-radius: 3px;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .brand-name {
+        font-size: 2rem;
+      }
+      
+      .dashboard-container {
+        padding: 1.5rem;
+        margin: 1.5rem;
+      }
+      
+      .dashboard-btn {
+        padding: 0.75rem 1.5rem;
+        min-width: 160px;
+      }
+      
+      .match-card .card-img-top {
+        height: 150px;
+      }
+      
+      .leaderboard-table th,
+      .leaderboard-table td {
+        padding: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <i class="fas fa-cricket"></i>PrediXI
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/"><i class="fas fa-home me-1"></i> Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/dashboard"><i class="fas fa-tachometer-alt me-1"></i> Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/profile"><i class="fas fa-user me-1"></i> Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt me-1"></i> Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header / Hero Banner -->
+  <header class="header animate__animated animate__fadeIn">
+    <div class="container">
+      <div class="logo-container">
+        <h1 class="brand-name animate__animated animate__fadeInDown">PrediXI</h1>
+        <p class="tagline animate__animated animate__fadeIn animate__delay-1s">
+          Your Ultimate Fantasy Cricket Prediction Platform
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Dashboard Section -->
+  <div class="container">
+    <div class="dashboard-container animate__animated animate__fadeInUp animate__delay-1s">
+      <h2 class="dashboard-title">Welcome to your Dashboard</h2>
+      
+      <div class="nav-links">
+        <a href="#" class="dashboard-btn animate__animated animate__pulse animate__infinite" id="predict-link">
+          <i class="fas fa-chart-line"></i> Predict Teams
+        </a>
+        <a href="#" class="dashboard-btn" id="upcoming-matches-btn">
+          <i class="fas fa-calendar-alt"></i> Upcoming Matches
+        </a>
+        <a href="#" class="dashboard-btn" id="leaderboard-btn">
+          <i class="fas fa-trophy"></i> Leaderboard
+        </a>
+      </div>
+      
+      <div class="stats-container mt-4">
+        <div class="stat-card animate__animated animate__fadeInLeft">
+          <div class="stat-title">Predictions Made</div>
+          <div class="stat-value" id="predictions-count">24</div>
+        </div>
+        <div class="stat-card animate__animated animate__fadeInUp">
+          <div class="stat-title">Accuracy Rate</div>
+          <div class="stat-value" id="accuracy-rate">78%</div>
+        </div>
+        <div class="stat-card animate__animated animate__fadeInRight">
+          <div class="stat-title">Current Rank</div>
+          <div class="stat-value" id="current-rank">#42</div>
+        </div>
+      </div>
+      
+      <!-- Matches Section (initially hidden) -->
+      <div class="section" id="matches-section" style="display: none;">
+        <h3 class="section-title">Upcoming Matches</h3>
+        <div class="row g-4" id="ongoing-matches-container">
+          <!-- Content will be loaded dynamically -->
+          <div class="col-12 text-center">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Leaderboard Section (initially hidden) -->
+      <div class="section" id="leaderboard-section" style="display: none;">
+        <h3 class="section-title">Leaderboard</h3>
+        <div id="leaderboard-container">
+          <!-- Content will be loaded dynamically -->
+          <div class="text-center">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Dynamic stats update (simulated)
+      function updateStats() {
+        // In a real app, you would fetch these from an API
+        const predictions = Math.floor(Math.random() * 50) + 20;
+        const accuracy = Math.floor(Math.random() * 30) + 70;
+        const rank = Math.floor(Math.random() * 100) + 1;
+        
+        document.getElementById('predictions-count').textContent = predictions;
+        document.getElementById('accuracy-rate').textContent = `${accuracy}%`;
+        document.getElementById('current-rank').textContent = `#${rank}`;
+        
+        // Animate the stats update
+        const statCards = document.querySelectorAll('.stat-card');
+        statCards.forEach(card => {
+          card.classList.add('animate__animated', 'animate__pulse');
+          setTimeout(() => {
+            card.classList.remove('animate__animated', 'animate__pulse');
+          }, 1000);
+        });
+      }
+      
+      // Update stats every 5 seconds (simulation)
+      updateStats();
+      setInterval(updateStats, 5000);
+      
+      // Predict link functionality
+      document.getElementById("predict-link").addEventListener("click", function(e) {
+        e.preventDefault();
+        
+        // Check if user is admin (in a real app, this would come from authentication)
+        const isAdmin = localStorage.getItem("isAdmin") === "true";
+        
+        // Add click animation
+        this.classList.add('animate__animated', 'animate__rubberBand');
+        setTimeout(() => {
+          this.classList.remove('animate__animated', 'animate__rubberBand');
+          
+          // Redirect based on role
+          if (isAdmin) {
+            window.location.href = "/predict"; // Admin prediction form
+          } else {
+            window.location.href = "/team"; // Regular user view
+          }
+        }, 500);
+      });
+      
+      // Function to load ongoing matches
+      function loadOngoingMatches() {
+        const container = document.getElementById('ongoing-matches-container');
+        const matchesSection = document.getElementById('matches-section');
+        
+        const matches = [
+          {
+            id: 1,
+            teams: "India vs Australia",
+            venue: "2nd ODI, Chennai",
+            image: "https://media.istockphoto.com/id/1496926751/vector/india-vs-australia-cricket-match-final-concept-background-with-stadium-lights-and-flags.jpg?s=612x612&w=0&k=20&c=cERzG5pJmYybfuLeZOAAwsqoaTCMF2R_VDCxQSUTPjg=",
+            alt: "India vs Australia ODI match",
+            status: "Live"
+          },
+          {
+            id: 2,
+            teams: "England vs Pakistan",
+            venue: "1st T20I, Old Trafford",
+            image: "https://c8.alamy.com/comp/2RHT071/england-vs-pakistan-sports-match-fixture-concept-background-with-lights-and-flags-2RHT071.jpg",
+            alt: "England vs Pakistan T20 match",
+            status: "Live"
+          },
+          {
+            id: 3,
+            teams: "South Africa vs New Zealand",
+            venue: "3rd Test, Cape Town",
+            image: "https://www.shutterstock.com/image-illustration/south-africa-vs-new-zealand-260nw-2349340533.jpg",
+            alt: "South Africa vs New Zealand Test match",
+            status: "Upcoming"
+          },
+          {
+            id: 4,
+            teams: "Bangladesh vs Sri Lanka",
+            venue: "5th ODI, Dhaka",
+            image: "https://www.shutterstock.com/image-illustration/bangladesh-vs-sri-lanka-cricket-260nw-2344662531.jpg",
+            alt: "Bangladesh vs Sri Lanka ODI",
+            status: "Upcoming"
+          }
+        ];
+        
+        // Show loading spinner
+        container.innerHTML = `
+          <div class="col-12 text-center">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        `;
+        
+        // Hide leaderboard section if visible
+        document.getElementById('leaderboard-section').style.display = 'none';
+        
+        // Simulate API delay
+        setTimeout(() => {
+          container.innerHTML = '';
+          
+          matches.forEach(match => {
+            const matchCard = document.createElement('div');
+            matchCard.className = 'col-md-6 col-lg-4 animate__animated animate__fadeInUp';
+            matchCard.innerHTML = `
+              <div class="card match-card h-100">
+                <img src="${match.image}" class="card-img-top" alt="${match.alt}" loading="lazy">
+                <div class="card-body">
+                  <h5 class="card-title">${match.teams}</h5>
+                  <p class="card-text text-muted">${match.venue}</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="badge ${match.status === 'Live' ? 'bg-danger' : match.status === 'Upcoming' ? 'bg-secondary' : 'bg-success'}">
+                      ${match.status}
+                    </span>
+                    <a href="/dashboard?match=${match.id}" class="btn btn-sm btn-outline-primary">
+                      <i class="bi bi-graph-up"></i> Predict
+                    </a>
+                  </div>
+                </div>
+              </div>
+            `;
+            container.appendChild(matchCard);
+          });
+          
+          // Show the matches section with animation
+          matchesSection.style.display = 'block';
+          matchesSection.classList.add('animate__animated', 'animate__fadeIn');
+          
+        }, 1000); // Simulated 1 second loading time
+      }
+      
+      // Function to load leaderboard
+      function loadLeaderboard() {
+        const container = document.getElementById('leaderboard-container');
+        const leaderboardSection = document.getElementById('leaderboard-section');
+        
+        const leaderboardData = [
+          { rank: 1, name: "CricketMaster", avatar: "https://randomuser.me/api/portraits/men/1.jpg", points: 1250 },
+          { rank: 2, name: "PredictionPro", avatar: "https://randomuser.me/api/portraits/women/2.jpg", points: 1180 },
+          { rank: 3, name: "MatchWhiz", avatar: "https://randomuser.me/api/portraits/men/3.jpg", points: 1125 },
+          { rank: 4, name: "ScoreNinja", avatar: "https://randomuser.me/api/portraits/women/4.jpg", points: 1080 },
+          { rank: 5, name: "WicketWizard", avatar: "https://randomuser.me/api/portraits/men/5.jpg", points: 1025 },
+          { rank: 6, name: "BoundaryKing", avatar: "https://randomuser.me/api/portraits/men/6.jpg", points: 980 },
+          { rank: 7, name: "SixerQueen", avatar: "https://randomuser.me/api/portraits/women/7.jpg", points: 950 },
+          { rank: 8, name: "PitchPerfect", avatar: "https://randomuser.me/api/portraits/men/8.jpg", points: 920 },
+          { rank: 9, name: "SpinDoctor", avatar: "https://randomuser.me/api/portraits/women/9.jpg", points: 890 },
+          { rank: 10, name: "FastFury", avatar: "https://randomuser.me/api/portraits/men/10.jpg", points: 860 }
+        ];
+        
+        // Show loading spinner
+        container.innerHTML = `
+          <div class="text-center">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        `;
+        
+        // Hide matches section if visible
+        document.getElementById('matches-section').style.display = 'none';
+        
+        // Simulate API delay
+        setTimeout(() => {
+          container.innerHTML = `
+            <div class="table-responsive">
+              <table class="leaderboard-table">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Player</th>
+                    <th>Points</th>
+                  </tr>
+                </thead>
+                <tbody id="leaderboard-body">
+                  ${leaderboardData.map(user => `
+                    <tr class="animate__animated animate__fadeIn">
+                      <td class="rank-cell">${user.rank}</td>
+                      <td class="user-cell">
+                        <img src="${user.avatar}" alt="${user.name}" class="user-avatar">
+                        <span>${user.name}</span>
+                      </td>
+                      <td class="points-cell">${user.points}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          `;
+          
+          // Show the leaderboard section with animation
+          leaderboardSection.style.display = 'block';
+          leaderboardSection.classList.add('animate__animated', 'animate__fadeIn');
+          
+          // Highlight current user in leaderboard (simulated)
+          const currentUserRank = parseInt(document.getElementById('current-rank').textContent.substring(1));
+          if (currentUserRank <= 10) {
+            const rows = document.querySelectorAll('#leaderboard-body tr');
+            rows[currentUserRank - 1].style.backgroundColor = 'rgba(59, 130, 246, 0.1)';
+            rows[currentUserRank - 1].classList.add('animate__pulse');
+          }
+          
+        }, 1000); // Simulated 1 second loading time
+      }
+      
+      // Upcoming matches button functionality
+      document.getElementById("upcoming-matches-btn").addEventListener("click", function(e) {
+        e.preventDefault();
+        
+        // Add click animation
+        this.classList.add('animate__animated', 'animate__rubberBand');
+        setTimeout(() => {
+          this.classList.remove('animate__animated', 'animate__rubberBand');
+        }, 500);
+        
+        // Toggle matches section visibility
+        const matchesSection = document.getElementById('matches-section');
+        if (matchesSection.style.display === 'none' || !matchesSection.style.display) {
+          loadOngoingMatches();
+        } else {
+          matchesSection.classList.add('animate__animated', 'animate__fadeOut');
+          setTimeout(() => {
+            matchesSection.style.display = 'none';
+            matchesSection.classList.remove('animate__animated', 'animate__fadeOut');
+          }, 500);
+        }
+      });
+      
+      // Leaderboard button functionality
+      document.getElementById("leaderboard-btn").addEventListener("click", function(e) {
+        e.preventDefault();
+        
+        // Add click animation
+        this.classList.add('animate__animated', 'animate__rubberBand');
+        setTimeout(() => {
+          this.classList.remove('animate__animated', 'animate__rubberBand');
+        }, 500);
+        
+        // Toggle leaderboard section visibility
+        const leaderboardSection = document.getElementById('leaderboard-section');
+        if (leaderboardSection.style.display === 'none' || !leaderboardSection.style.display) {
+          loadLeaderboard();
+        } else {
+          leaderboardSection.classList.add('animate__animated', 'animate__fadeOut');
+          setTimeout(() => {
+            leaderboardSection.style.display = 'none';
+            leaderboardSection.classList.remove('animate__animated', 'animate__fadeOut');
+          }, 500);
+        }
+      });
+      
+      // Add hover animations to all buttons
+      const buttons = document.querySelectorAll('.dashboard-btn');
+      buttons.forEach(btn => {
+        btn.addEventListener('mouseenter', () => {
+          btn.classList.add('animate__animated', 'animate__pulse');
+        });
+        btn.addEventListener('mouseleave', () => {
+          btn.classList.remove('animate__animated', 'animate__pulse');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

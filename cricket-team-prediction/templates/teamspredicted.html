@@ -1,0 +1,240 @@
+#teamspredicted.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predicted Teams</title>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --primary-hover: #45a049;
+            --text-color: white;
+            --error-color: #ff0000;
+            --highlight-color: #ffff00;
+            --card-bg: rgba(0, 0, 0, 0.6);
+            --player-bg: rgba(255, 255, 255, 0.1);
+        }
+        
+        body {
+            background-image: url('https://i.ibb.co/KQfJBJ6/background-Image.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Arial', sans-serif;
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        h2 {
+            text-shadow: 2px 2px 4px #000;
+            margin-bottom: 30px;
+        }
+        
+        .teams-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .team-box {
+            border: 2px solid var(--text-color);
+            padding: 20px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            width: 100%;
+            max-width: 350px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .team-box:hover {
+            transform: translateY(-5px);
+        }
+        
+        .team-box h3 {
+            margin-top: 0;
+            border-bottom: 1px solid var(--text-color);
+            padding-bottom: 10px;
+        }
+        
+        .players-list {
+            margin-top: 15px;
+        }
+        
+        .player {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: var(--player-bg);
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .player:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .player img {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+            object-fit: cover;
+            border: 2px solid var(--text-color);
+            border-radius: 50%;
+        }
+        
+        .player-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            flex-grow: 1;
+        }
+        
+        .player-name {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        
+        .player-details {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .player-points {
+            font-weight: bold;
+        }
+        
+        .total-points {
+            font-weight: bold;
+            color: var(--highlight-color);
+            margin-top: 15px;
+            font-size: 1.1em;
+        }
+        
+        .error {
+            color: var(--error-color);
+            font-weight: bold;
+            padding: 10px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .team-box {
+                max-width: 100%;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 250px;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Predicted Teams</h2>
+
+        <div class="teams-container">
+            {% if teams and teams|length > 0 %}
+                {% for i in range(teams|length) %}
+                <div class="team-box">
+                    <h3>{{ team1_name if i == 0 else team2_name if i == 1 else 'Team ' ~ (i+1) }}</h3>
+                    
+                    {% if teams[i] and teams[i]|length > 0 %}
+                        <div class="players-list">
+                            {% for player in teams[i] %}
+                            <div class="player">
+                               <img src="{{ url_for('static', filename='images/' ~ player['Photo'].lower().replace(' ', '_')) }}" 
+     alt="{{ player.get('PlayerName', 'Player Image') }}"
+     onerror="this.src='{{ url_for('static', filename='images/default.jpg') }}'">
+
+                                <div class="player-info">
+                                    <span class="player-name">{{ player.get('PlayerName', 'Unknown') }}</span>
+                                    <span class="player-details">
+                                        {{ player.get('Role', 'N/A') }} | {{ player.get('Team', 'N/A') }}
+                                    </span>
+                                    <span class="player-points">
+                                        Points: {{ player.get('Points', 0) | float | round(1) }}
+                                    </span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <p class="total-points">
+                            Total Team Points: {{ teams[i]|sum(attribute='Points')|float|round(1) }}
+                        </p>
+                    {% else %}
+                        <p class="error">No players assigned to this team.</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="error">No teams generated. Please try again.</p>
+            {% endif %}
+        </div>
+
+        <div class="action-buttons">
+            <a href="/predict" class="btn">Try Again</a>
+            <a href="/" class="btn">Home</a>
+        </div>
+    </div>
+
+    <script>
+        // Add image error fallback for any missed cases
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('.player img');
+            const defaultImage = '{{ url_for("static", filename="images/default.jpg") }}';
+            
+            images.forEach(img => {
+                img.addEventListener('error', function() {
+                    this.src = defaultImage;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

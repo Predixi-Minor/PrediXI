@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <title>Profile - PrediXI</title>
+
+    <style>
+      /* [Your existing CSS remains unchanged] */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f3f4f6;
+        color: #1f2937;
+        line-height: 1.5;
+      }
+
+      .navbar {
+        background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      }
+
+      .navbar-brand,
+      .nav-link {
+        color: #fff !important;
+        font-weight: 500;
+      }
+
+      .nav-link.active {
+        color: #a5b4fc !important;
+      }
+
+      .navbar-nav .nav-link:hover {
+        color: #a5b4fc !important;
+      }
+
+      .header {
+        background-color: #fff;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+      }
+
+      .header-content {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem;
+        text-align: center;
+      }
+
+      .logo-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+      }
+
+      .brand-name {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(to right, #3b82f6, #a855f7);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .tagline {
+        margin-top: 0.5rem;
+        color: #6b7280;
+      }
+
+      .profile-container {
+        min-height: 100vh;
+        padding: 2rem 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .profile-card {
+        background: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 64rem;
+        overflow: hidden;
+      }
+
+      .profile-left {
+        padding: 2rem;
+        background-color: #f9fafb;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1.5rem;
+      }
+
+      .profile-image-container {
+        position: relative;
+        width: 10rem;
+        height: 10rem;
+        margin: 0 auto;
+      }
+
+      .profile-image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 4px solid white;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      }
+
+      .profile-right {
+        padding: 2rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+      }
+
+      .profile-details {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .input-group {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .icon {
+        font-size: 1.25rem;
+        color: #6b7280;
+        margin-top: 0.25rem;
+      }
+
+      .input-container {
+        flex: 1;
+      }
+
+      label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #6b7280;
+        margin-bottom: 0.25rem;
+      }
+
+      .value {
+        color: #1f2937;
+        display: block;
+        padding: 0.375rem 0;
+      }
+
+      .balance {
+        font-size: 1.25rem;
+        font-weight: 700;
+      }
+
+      .btn-edit {
+        background-color: #3b82f6;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .btn-edit:hover {
+        background-color: #2563eb;
+      }
+
+      .btn-save {
+        background-color: #10b981;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .btn-save:hover {
+        background-color: #059669;
+      }
+
+      .btn-cancel {
+        background-color: #ef4444;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        margin-left: 0.5rem;
+      }
+
+      .btn-cancel:hover {
+        background-color: #dc2626;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        border: 1px solid #d1d5db;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s;
+      }
+
+      .form-control:focus {
+        border-color: #3b82f6;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+
+      .image-upload {
+        position: relative;
+        width: 100%;
+        text-align: center;
+      }
+
+      .image-upload input {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        cursor: pointer;
+      }
+
+      .image-upload-label {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background-color: #3b82f6;
+        color: white;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .image-upload-label:hover {
+        background-color: #2563eb;
+      }
+
+      .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 2rem;
+        gap: 0.5rem;
+      }
+
+      .stats-container {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 1.5rem;
+        text-align: center;
+      }
+
+      .stat-item {
+        padding: 0.5rem;
+      }
+
+      .stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #3b82f6;
+      }
+
+      .stat-label {
+        font-size: 0.75rem;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .error-message {
+        color: #ef4444;
+        font-size: 0.8rem;
+        margin-top: 5px;
+        display: block;
+        min-height: 20px;
+      }
+
+      .is-invalid {
+        border-color: #ef4444 !important;
+      }
+
+      .is-valid {
+        border-color: #10b981 !important;
+      }
+
+      @media (min-width: 768px) {
+        .profile-card {
+          display: flex;
+        }
+
+        .profile-left {
+          width: 33.333333%;
+        }
+
+        .profile-right {
+          flex: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="/">PrediXI</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link active" href="/profile">Profile</a></li>
+            <li class="nav-item" id="logout-link-container">
+              <a class="nav-link" href="#" id="logoutLink">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo-container">
+          <h1 class="brand-name">PrediXI</h1>
+        </div>
+        <p class="tagline">Your Ultimate Fantasy Cricket Prediction Platform</p>
+      </div>
+    </header>
+
+    <!-- PROFILE BODY -->
+    <div id="app-container" class="profile-container"></div>
+
+    <!-- Firebase SDK and Profile Logic -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+      import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+      import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
+      import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-storage.js";
+
+      // Firebase Configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyBOhj8FYPcUKIZsFQDzvIeAUaNIOxP6hwE",
+        authDomain: "predixi-78708.firebaseapp.com",
+        projectId: "predixi-78708",
+        storageBucket: "predixi-78708.appspot.com",
+        messagingSenderId: "436837749961",
+        appId: "1:436837749961:web:0df94a02dcb0579605a918",
+        measurementId: "G-44NG70SQGZ"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+      const storage = getStorage(app);
+
+      // Validation Functions
+      function validateName(name) {
+        const usernameRegex = /^[a-zA-Z0-9]{3,20}$/;
+        return usernameRegex.test(name);
+      }
+
+      function validateMobile(mobile) {
+        const mobileRegex = /^[0-9]{10}$/;
+        return mobileRegex.test(mobile);
+      }
+
+      function validateEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      }
+
+      // Upload Image to Firebase Storage
+      async function uploadProfileImage(userId, file) {
+        try {
+          const storageRef = ref(storage, `profileImages/${userId}/${Date.now()}_${file.name}`); // Unique filename with timestamp
+          console.log("Uploading image to:", storageRef.fullPath);
+          const snapshot = await uploadBytes(storageRef, file);
+          console.log("Image uploaded successfully:", snapshot.metadata);
+          const downloadURL = await getDownloadURL(storageRef);
+          console.log("Download URL:", downloadURL);
+          return downloadURL;
+        } catch (error) {
+          console.error("Error uploading image:", error);
+          throw error;
+        }
+      }
+
+      // Delete Image from Firebase Storage
+      async function deleteProfileImage(imageUrl) {
+        if (!imageUrl) return; // No image to delete
+        try {
+          const fileRef = ref(storage, imageUrl);
+          console.log("Attempting to delete image:", fileRef.fullPath);
+          await deleteObject(fileRef);
+          console.log("Image deleted successfully:", imageUrl);
+        } catch (error) {
+          console.error("Error deleting image:", error);
+          if (error.code !== 'storage/object-not-found') {
+            throw error;
+          }
+        }
+      }
+
+      // Render Profile Page
+      async function renderProfilePage(user, userData, editMode = false) {
+        const container = document.getElementById('app-container');
+        
+        console.log("Rendering profile with userData:", userData);
+        
+        container.innerHTML = `
+          <div class="profile-card">
+            <div class="profile-left">
+              <div class="profile-image-container">
+                <img src="${userData.profileImage || 'https://randomuser.me/api/portraits/men/' + Math.floor(Math.random() * 100) + '.jpg'}" alt="Profile" id="profileImage">
+              </div>
+              <div class="image-upload">
+                ${editMode ? `
+                  <label for="imageUpload" class="image-upload-label">
+                    <i class="fas fa-camera"></i> Change Photo
+                  </label>
+                  <input type="file" id="imageUpload" accept="image/*">
+                ` : ''}
+              </div>
+              <div class="text-center">
+                <h3>${userData.fullName || userData.username}</h3>
+                <p class="text-muted">Member since ${new Date(userData.joinedDate).toLocaleDateString()}</p>
+              </div>
+              ${!editMode ? `
+                <div class="stats-container">
+                  <div class="stat-item">
+                    <div class="stat-value">${userData.stats?.matchesPredicted || 0}</div>
+                    <div class="stat-label">Matches</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-value">${userData.stats?.correctPredictions || 0}</div>
+                    <div class="stat-label">Correct</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-value">${userData.stats?.accuracy || 0}%</div>
+                    <div class="stat-label">Accuracy</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-value">#${userData.stats?.rank || 0}</div>
+                    <div class="stat-label">Rank</div>
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+            <div class="profile-right">
+              <div class="d-flex justify-content-between align-items-center">
+                <h2>Profile Details</h2>
+                ${!editMode ? `
+                  <button class="btn-edit" id="editProfileBtn">
+                    <i class="fas fa-edit"></i> Edit Profile
+                  </button>
+                ` : ''}
+              </div>
+              
+              <div class="profile-details">
+                <div class="input-group">
+                  <span class="icon"><i class="fas fa-user"></i></span>
+                  <div class="input-container">
+                    <label>Full Name</label>
+                    ${editMode ? `
+                      <input type="text" class="form-control" id="fullNameInput" value="${userData.fullName || ''}">
+                      <span id="fullNameError" class="error-message"></span>
+                    ` : `<span class="value">${userData.fullName || 'Not provided'}</span>`}
+                  </div>
+                </div>
+                
+                <div class="input-group">
+                  <span class="icon"><i class="fas fa-at"></i></span>
+                  <div class="input-container">
+                    <label>Username</label>
+                    ${editMode ? `
+                      <input type="text" class="form-control" id="usernameInput" value="${userData.username}">
+                      <span id="usernameError" class="error-message"></span>
+                    ` : `<span class="value">${userData.username}</span>`}
+                  </div>
+                </div>
+                
+                <div class="input-group">
+                  <span class="icon"><i class="fas fa-envelope"></i></span>
+                  <div class="input-container">
+                    <label>Email</label>
+                    ${editMode ? `
+                      <input type="email" class="form-control" id="emailInput" value="${userData.email}">
+                      <span id="emailError" class="error-message"></span>
+                    ` : `<span class="value">${userData.email}</span>`}
+                  </div>
+                </div>
+                
+                <div class="input-group">
+                  <span class="icon"><i class="fas fa-mobile-alt"></i></span>
+                  <div class="input-container">
+                    <label>Mobile</label>
+                    ${editMode ? `
+                      <input type="tel" class="form-control" id="mobileInput" value="${userData.mobile}">
+                      <span id="mobileError" class="error-message"></span>
+                    ` : `<span class="value">${userData.mobile || 'Not provided'}</span>`}
+                  </div>
+                </div>
+                
+                <div class="input-group">
+                  <span class="icon"><i class="fas fa-wallet"></i></span>
+                  <div class="input-container">
+                    <label>Wallet Balance</label>
+                    <span class="value balance">$${userData.balance?.toFixed(2) || '0.00'}</span>
+                  </div>
+                </div>
+              </div>
+              
+              ${editMode ? `
+                <div class="action-buttons">
+                  <button class="btn-save" id="saveProfileBtn">
+                    <i class="fas fa-save"></i> Save Changes
+                  </button>
+                  <button class="btn-cancel" id="cancelEditBtn">
+                    <i class="fas fa-times"></i> Cancel
+                  </button>
+                </div>
+              ` : ''}
+            </div>
+          </div>`;
+
+        // Event Listeners for Edit Mode
+        if (editMode) {
+          let newImageFile = null;
+
+          // Image Upload Handler
+          document.getElementById('imageUpload')?.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+              newImageFile = file;
+              console.log("Selected file:", file.name, file.size);
+              const reader = new FileReader();
+              reader.onload = function(event) {
+                console.log("Previewing image locally");
+                document.getElementById('profileImage').src = event.target.result;
+              };
+              reader.readAsDataURL(file);
+            }
+          });
+
+          // Validation Handlers
+          document.getElementById('fullNameInput')?.addEventListener('input', function() {
+            const errorElement = document.getElementById('fullNameError');
+            if (this.value.length > 0 && this.value.length < 3) {
+              errorElement.textContent = "Name should be at least 3 characters";
+              this.classList.add('is-invalid');
+              this.classList.remove('is-valid');
+            } else {
+              errorElement.textContent = "";
+              this.classList.remove('is-invalid');
+              this.classList.add('is-valid');
+            }
+          });
+
+          document.getElementById('usernameInput')?.addEventListener('input', function() {
+            const errorElement = document.getElementById('usernameError');
+            if (!validateName(this.value)) {
+              errorElement.textContent = "Username should be 3-20 characters (letters and numbers only)";
+              this.classList.add('is-invalid');
+              this.classList.remove('is-valid');
+            } else {
+              errorElement.textContent = "";
+              this.classList.remove('is-invalid');
+              this.classList.add('is-valid');
+            }
+          });
+
+          document.getElementById('emailInput')?.addEventListener('input', function() {
+            const errorElement = document.getElementById('emailError');
+            if (!validateEmail(this.value)) {
+              errorElement.textContent = "Please enter a valid email address";
+              this.classList.add('is-invalid');
+              this.classList.remove('is-valid');
+            } else {
+              errorElement.textContent = "";
+              this.classList.remove('is-invalid');
+              this.classList.add('is-valid');
+            }
+          });
+
+          document.getElementById('mobileInput')?.addEventListener('input', function() {
+            const errorElement = document.getElementById('mobileError');
+            if (this.value && !validateMobile(this.value)) {
+              errorElement.textContent = "Please enter a valid 10-digit mobile number";
+              this.classList.add('is-invalid');
+              this.classList.remove('is-valid');
+            } else {
+              errorElement.textContent = "";
+              this.classList.remove('is-invalid');
+              this.classList.add('is-valid');
+            }
+          });
+
+          // Save Button Handler
+          document.getElementById('saveProfileBtn').addEventListener('click', async function() {
+            const fullName = document.getElementById('fullNameInput').value;
+            const username = document.getElementById('usernameInput').value;
+            const email = document.getElementById('emailInput').value;
+            const mobile = document.getElementById('mobileInput').value;
+
+            let isValid = true;
+
+            if (fullName.length > 0 && fullName.length < 3) {
+              document.getElementById('fullNameInput').classList.add('is-invalid');
+              isValid = false;
+            }
+
+            if (!validateName(username)) {
+              document.getElementById('usernameInput').classList.add('is-invalid');
+              isValid = false;
+            }
+
+            if (!validateEmail(email)) {
+              document.getElementById('emailInput').classList.add('is-invalid');
+              isValid = false;
+            }
+
+            if (mobile && !validateMobile(mobile)) {
+              document.getElementById('mobileInput').classList.add('is-invalid');
+              isValid = false;
+            }
+
+            if (!isValid) {
+              alert('Please correct the errors before saving.');
+              return;
+            }
+
+            try {
+              // Handle image upload and deletion
+              let profileImageUrl = userData.profileImage;
+              if (newImageFile) {
+                console.log("New image selected, handling upload and deletion");
+                // Delete old image if it exists
+                if (profileImageUrl) {
+                  await deleteProfileImage(profileImageUrl);
+                }
+                // Upload new image with a unique filename
+                profileImageUrl = await uploadProfileImage(user.uid, newImageFile);
+                console.log("New profile image URL:", profileImageUrl);
+              } else {
+                console.log("No new image selected, keeping existing:", profileImageUrl);
+              }
+
+              // Update userData object
+              userData.fullName = fullName;
+              userData.username = username;
+              userData.email = email;
+              userData.mobile = mobile;
+              userData.profileImage = profileImageUrl;
+
+              // Save to Firestore
+              const userDocRef = doc(db, "users", user.uid);
+              console.log("Saving to Firestore:", {
+                fullName: userData.fullName,
+                username: userData.username,
+                email: userData.email,
+                mobile: userData.mobile,
+                profileImage: userData.profileImage || null,
+              });
+              await updateDoc(userDocRef, {
+                fullName: userData.fullName,
+                username: userData.username,
+                email: userData.email,
+                mobile: userData.mobile,
+                profileImage: userData.profileImage || null,
+              });
+
+              alert('Profile updated successfully!');
+              renderProfilePage(user, userData, false);
+            } catch (error) {
+              console.error("Error in save process:", error);
+              alert('Failed to update profile: ' + error.message);
+            }
+          });
+
+          // Cancel Button Handler
+          document.getElementById('cancelEditBtn').addEventListener('click', function() {
+            renderProfilePage(user, userData, false);
+          });
+        } else {
+          // Edit Button Handler
+          document.getElementById('editProfileBtn')?.addEventListener('click', function() {
+            renderProfilePage(user, userData, true);
+          });
+        }
+      }
+
+      // Initialize App
+      function initApp() {
+        onAuthStateChanged(auth, async (user) => {
+          if (user) {
+            console.log("User is logged in:", user.uid, user.email);
+            // Fetch user data from Firestore
+            try {
+              const userDocRef = doc(db, "users", user.uid);
+              const userDoc = await getDoc(userDocRef);
+              if (userDoc.exists()) {
+                const userData = {
+                  username: userDoc.data().username || user.email.split('@')[0],
+                  fullName: userDoc.data().fullName || '',
+                  email: userDoc.data().email || user.email,
+                  mobile: userDoc.data().mobile || '',
+                  joinedDate: userDoc.data().createdAt?.toDate().toISOString() || new Date().toISOString(),
+                  profileImage: userDoc.data().profileImage || null,
+                  balance: userDoc.data().balance || 0,
+                  stats: userDoc.data().stats || {
+                    matchesPredicted: 0,
+                    correctPredictions: 0,
+                    accuracy: 0,
+                    rank: 0
+                  }
+                };
+                console.log("Fetched user data from Firestore:", userData);
+                renderProfilePage(user, userData);
+              } else {
+                alert("User data not found in Firestore.");
+                window.location.href = '/';
+              }
+            } catch (error) {
+              console.error("Error fetching user data:", error);
+              alert("Error loading profile. Please try again.");
+              window.location.href = '/login';
+            }
+          } else {
+            console.log("User is logged out.");
+            window.location.href = '/login';
+          }
+        });
+
+        // Logout Handler
+        document.getElementById('logoutLink').addEventListener('click', (e) => {
+          e.preventDefault();
+          signOut(auth)
+            .then(() => {
+              console.log("User signed out successfully.");
+              window.location.href = '/login';
+            })
+            .catch((error) => {
+              console.error("Sign out error:", error);
+              alert("Error signing out. Please try again.");
+            });
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+  </body>
+</html>

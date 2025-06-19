@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PrediXi - Predict Your Team</title>
+  
+  <!-- Bootstrap 5 CDN + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <style>
+    :root {
+      --primary-color: #4e73df;
+      --secondary-color: #f8f9fc;
+    }
+    body {
+      background-color: var(--secondary-color);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .form-container {
+      background: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+      padding: 2.5rem;
+      margin-top: 2rem;
+    }
+    .form-header {
+      color: var(--primary-color);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .form-label {
+      font-weight: 500;
+      color: #5a5c69;
+    }
+    .dynamic-section {
+      transition: all 0.3s ease;
+    }
+    .player-count {
+      font-size: 0.85rem;
+      color: #6c757d;
+    }
+    .btn-predict {
+      background-color: var(--primary-color);
+      border: none;
+      padding: 0.75rem;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    .btn-predict:hover {
+      background-color: #2e59d9;
+      transform: translateY(-2px);
+    }
+    .feedback-area {
+      min-height: 3rem;
+    }
+    .loading-spinner {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  </style>
+</head>
+<body class="bg-light">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="form-container">
+          <h2 class="form-header">
+            <i class="bi bi-graph-up-arrow me-2"></i>Predict Your Cricket Team
+          </h2>
+
+          <!-- Match Format -->
+          <div class="mb-4">
+            <label for="match_format" class="form-label">
+              <i class="bi bi-list-check me-1"></i>Match Format
+            </label>
+            <select id="match_format" class="form-select form-select-lg">
+              <option value="" selected disabled>Select match format</option>
+              <option value="Test">Test Match</option>
+              <option value="ODI">One Day International</option>
+            </select>
+          </div>
+
+          <!-- Dynamic Venue Selection -->
+          <div class="mb-4 dynamic-section" id="venue-section" style="display: none;">
+            <label for="venue" class="form-label">
+              <i class="bi bi-geo-alt me-1"></i>Match Venue
+            </label>
+            <select id="venue" class="form-select form-select-lg" disabled>
+              <option value="" selected disabled>Select venue</option>
+            </select>
+          </div>
+
+          <!-- Team Input Sections -->
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <div class="card h-100 border-primary">
+                <div class="card-header bg-primary text-white">
+                  <i class="bi bi-people-fill me-2"></i>Team 1
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label for="team1" class="form-label">Team Name</label>
+                    <input type="text" id="team1" class="form-control" placeholder="E.g. India">
+                  </div>
+                  <div class="mb-3">
+                    <label for="players1" class="form-label">Players (comma separated)</label>
+                    <textarea id="players1" class="form-control" rows="4" 
+                              placeholder="Virat Kohli, Rohit Sharma, ..."></textarea>
+                    <div class="player-count mt-1">
+                      <span id="count1">0</span>/11 players entered
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card h-100 border-danger">
+                <div class="card-header bg-danger text-white">
+                  <i class="bi bi-people-fill me-2"></i>Team 2
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label for="team2" class="form-label">Team Name</label>
+                    <input type="text" id="team2" class="form-control" placeholder="E.g. Australia">
+                  </div>
+                  <div class="mb-3">
+                    <label for="players2" class="form-label">Players (comma separated)</label>
+                    <textarea id="players2" class="form-control" rows="4" 
+                              placeholder="Steve Smith, David Warner, ..."></textarea>
+                    <div class="player-count mt-1">
+                      <span id="count2">0</span>/11 players entered
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="d-grid mt-4">
+            <button id="predict_btn" class="btn btn-predict btn-lg">
+              <span id="btn-text">Predict Teams</span>
+              <span id="btn-spinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+            </button>
+          </div>
+
+          <!-- Feedback Area -->
+          <div id="feedback" class="feedback-area mt-3 text-center"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      // Venue data
+      const venueData = {
+        "Test": ["Dehradun", "Thiruvananthapuram", "Ahmedabad"],
+        "ODI": ["Chennai", "Kolkata", "Jaipur", "Delhi"]
+      };
+
+      // Format selection handler
+      $("#match_format").change(function() {
+        const format = $(this).val();
+        const $venueSection = $("#venue-section");
+        const $venueSelect = $("#venue");
+
+        if (format) {
+          $venueSection.fadeIn(300);
+          $venueSelect.prop("disabled", false);
+          
+          // Populate venues
+          $venueSelect.empty().append('<option value="" selected disabled>Select venue</option>');
+          venueData[format].forEach(venue => {
+            $venueSelect.append(`<option value="${venue}">${venue}</option>`);
+          });
+        } else {
+          $venueSection.fadeOut(300);
+          $venueSelect.prop("disabled", true);
+        }
+      });
+
+      // Player count updater
+      function updatePlayerCount(textarea, countElement) {
+        const players = textarea.val().split(',').filter(p => p.trim().length > 0);
+        countElement.text(players.length);
+        
+        // Visual feedback
+        if (players.length === 11) {
+          countElement.removeClass("text-danger").addClass("text-success");
+        } else {
+          countElement.removeClass("text-success").addClass("text-danger");
+        }
+      }
+
+      // Bind player count updates
+      $("#players1, #players2").on("input", function() {
+        const countElement = $(this).closest(".card-body").find(".player-count span");
+        updatePlayerCount($(this), countElement);
+      });
+
+      // Prediction handler
+      $("#predict_btn").click(function() {
+        // Get form values
+        const format = $("#match_format").val();
+        const venue = $("#venue").val();
+        const team1 = $("#team1").val().trim();
+        const team2 = $("#team2").val().trim();
+        const players1 = $("#players1").val().split(',').map(p => p.trim()).filter(Boolean);
+        const players2 = $("#players2").val().split(',').map(p => p.trim()).filter(Boolean);
+
+        // Validate inputs
+        const errors = [];
+        if (!format) errors.push("Please select match format");
+        if (!venue) errors.push("Please select venue");
+        if (!team1) errors.push("Please enter Team 1 name");
+        if (!team2) errors.push("Please enter Team 2 name");
+        if (team1.toLowerCase() === team2.toLowerCase()) errors.push("Team names must be different");
+        if (players1.length !== 11) errors.push("Team 1 must have exactly 11 players");
+        if (players2.length !== 11) errors.push("Team 2 must have exactly 11 players");
+
+        if (errors.length > 0) {
+          showFeedback(errors.join("<br>"), "danger");
+          return;
+        }
+
+        // Prepare for submission
+        toggleLoading(true);
+        showFeedback("Analyzing players and predicting optimal teams...", "info");
+
+        // AJAX request
+        $.ajax({
+          url: "/predict",
+          method: "POST",
+          contentType: "application/json",
+          data: JSON.stringify({
+            format_type: format,
+            venue: venue,
+            team1_name: team1,
+            team2_name: team2,
+            players: [...players1, ...players2]
+          }),
+          success: function(response) {
+            if (response.status === "success") {
+              window.location.href = "/team";
+            } else {
+              showFeedback(response.error || "Prediction failed. Please try again.", "danger");
+              toggleLoading(false);
+            }
+          },
+          error: function(xhr) {
+            const errorMsg = xhr.responseJSON?.error || "Server error. Please try again later.";
+            showFeedback(errorMsg, "danger");
+            toggleLoading(false);
+          }
+        });
+      });
+
+      // Helper functions
+      function toggleLoading(show) {
+        $("#btn-text").toggle(!show);
+        $("#btn-spinner").toggleClass("d-none", !show);
+        $("#predict_btn").prop("disabled", show);
+      }
+
+      function showFeedback(message, type) {
+        $("#feedback").html(
+          `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>`
+        );
+      }
+    });
+  </script>
+</body>
+</html>
